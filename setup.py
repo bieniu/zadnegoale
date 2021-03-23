@@ -20,5 +20,5 @@ setup(
         "Operating System :: OS Independent",
     ],
     setup_requires=("pytest-runner"),
-    tests_require=list(val.strip() for val in open("requirements-test.txt")),
+    # tests_require=list(val.strip() for val in open("requirements-test.txt")),
 )
