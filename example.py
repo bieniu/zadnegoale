@@ -8,7 +8,7 @@ from zadnegoale import (
 )
 from aiohttp import ClientError, ClientSession
 
-REGION = 6
+REGION = 9
 
 logging.basicConfig(level=logging.DEBUG)
 
