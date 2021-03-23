@@ -33,7 +33,7 @@ class ZadnegoAle:
     def _parse_dusts(data: list) -> dict:
         """Parse and clean dusts API response."""
         parsed = {
-            item["allergen"]["name"]: {
+            item["allergen"]["name"].lower(): {
                 "value": item["value"],
                 "trend": item["trend"].lower(),
                 "level": item["level"].lower(),
