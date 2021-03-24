@@ -1,11 +1,7 @@
 import asyncio
 import logging
 
-from zadnegoale import (
-    ZadnegoAle,
-    ApiError,
-    InvalidRegionError,
-)
+from zadnegoale import ZadnegoAle, ApiError, InvalidRegionError
 from aiohttp import ClientError, ClientSession
 
 REGION = 9
