@@ -29,15 +29,18 @@ jobs:
     - name: Check with Black Code Formatter
       run: |
         pip install black
-        black zadnegoale --check
+        black zadnegoale tests --check
     - name: Lint with flake8
       run: |
         pip install flake8
-        flake8 zadnegoale
+        flake8 zadnegoale tests
     - name: Lint with pylint
       run: |
         pip install pylint
-        pylint zadnegoale
+        pylint zadnegoale tests
     - name: Test with mypy
       run: |
         mypy zadnegoale
+    - name: Test with pytest
+      run: |
+        python setup.py test

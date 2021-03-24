@@ -1,0 +1,22 @@
+[
+    {
+        "id": 529,
+        "text": "Wysokie stężenie pyłku olszy, bardzo niskie leszczyny.",
+        "startDate": {
+            "date": "2021-03-20 00:36:01.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Warsaw"
+        },
+        "endDate": {
+            "date": "2021-03-24 00:36:01.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Warsaw"
+        },
+        "regions": [
+            {
+                "id": 9,
+                "name": "Karpaty"
+            }
+        ]
+    }
+]
