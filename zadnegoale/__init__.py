@@ -58,7 +58,7 @@ class ZadnegoAle:
                 raise ApiError(f"Invalid response from Zadnego Ale API: {data}")
         return data
 
-    async def async_update(self):
+    async def async_update(self, alerts=False):
         """Retreive data from Zadnego Ale."""
         url = self._construct_url(
             ATTR_DUSTS, year=date.today().year, region=self._region
@@ -67,6 +67,14 @@ class ZadnegoAle:
 
         if not self._region_name:
             self._region_name = dusts[0]["region"]["name"]
+
+        if alerts:
+            url = self._construct_url(
+                ATTR_ALERTS, year=date.today().year, region=self._region
+            )
+            alerts = await self._async_get_data(url)
+
+            return {**self._parse_dusts(dusts), **self._parse_alerts(alerts)}
 
         return self._parse_dusts(dusts)
 

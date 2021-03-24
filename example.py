@@ -17,7 +17,7 @@ async def main():
     async with ClientSession() as websession:
         try:
             zadnegoale = ZadnegoAle(websession, REGION)
-            data = await zadnegoale.async_update()
+            data = await zadnegoale.async_update(alerts=True)
 
 
         except (ApiError, ClientError, InvalidRegionError) as error:
