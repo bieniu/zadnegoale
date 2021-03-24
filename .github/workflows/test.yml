@@ -40,4 +40,4 @@ jobs:
         pylint zadnegoale
     - name: Test with mypy
       run: |
-        mypy accuweather
+        mypy zadnegoale
