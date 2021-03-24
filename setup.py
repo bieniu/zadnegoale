@@ -9,7 +9,7 @@ setup(
     description="Python wrapper for getting allergen concentration data from Żadnego Ale servers.",
     include_package_data=True,
     url="https://github.com/bieniu/zadnegoale",
-    license="Apache License 2.0",
+    license="Apache-2.0 License",
     packages=["zadnegoale"],
     python_requires=">=3.6",
     install_requires=list(val.strip() for val in open("requirements.txt")),
