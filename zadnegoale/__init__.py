@@ -60,8 +60,9 @@ class ZadnegoAle:
 
     async def async_update(self, alerts=False):
         """Retreive data from Zadnego Ale."""
+        date_str = date.today().strftime("%Y%m%d")
         url = self._construct_url(
-            ATTR_DUSTS, year=date.today().year, region=self._region
+            ATTR_DUSTS, date=date_str, region=self._region
         )
         dusts = await self._async_get_data(url)
 
@@ -70,7 +71,7 @@ class ZadnegoAle:
 
         if alerts:
             url = self._construct_url(
-                ATTR_ALERTS, year=date.today().year, region=self._region
+                ATTR_ALERTS, date=date_str, region=self._region
             )
             alerts = await self._async_get_data(url)
 
