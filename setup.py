@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name="zadnegoale",
-    version="0.0.1",
+    version="0.0.2",
     author="Maciej Bieniek",
     author_email="maciej.bieniek@gmail.com",
     description="Python wrapper for getting allergen data from Żadnego Ale servers.",
