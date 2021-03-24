@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 from setuptools import setup
 
-
 setup(
     name="zadnegoale",
     version="0.0.2",
