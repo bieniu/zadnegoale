@@ -12,6 +12,17 @@ from .const import ATTR_ALERTS, ATTR_DUSTS, ENDPOINT, HTTP_OK, URLS
 _LOGGER = logging.getLogger(__name__)
 
 
+class DictToObj(dict):
+    """Dictionary to object class."""
+
+    def __getattr__(self, name):
+        if name in self:
+            if isinstance(self[name], dict):
+                return DictToObj(self[name])
+            return self[name]
+        return None
+
+
 class ZadnegoAle:
     """Main class to perform Zadnego Ale API requests"""
 
@@ -40,6 +51,7 @@ class ZadnegoAle:
             }
             for item in data
         }
+
         return {"sensors": parsed}
 
     @staticmethod
@@ -47,7 +59,7 @@ class ZadnegoAle:
         """Parse and clean alerts API response."""
         return {"alerts": {"value": data[0]["text"]}}
 
-    async def _async_get_data(self, url: str) -> dict:
+    async def _async_get_data(self, url: str) -> list:
         """Retreive data from Zadnego Ale API."""
         async with self._session.get(url) as resp:
             if resp.status != HTTP_OK:
@@ -58,7 +70,7 @@ class ZadnegoAle:
                 raise ApiError(f"Invalid response from Zadnego Ale API: {data}")
         return data
 
-    async def async_update(self, alerts=False):
+    async def async_update(self, alerts=False) -> DictToObj:
         """Retreive data from Zadnego Ale."""
         date_str = date.today().strftime("%Y%m%d")
         url = self._construct_url(ATTR_DUSTS, date=date_str, region=self._region)
@@ -70,10 +82,9 @@ class ZadnegoAle:
         if alerts:
             url = self._construct_url(ATTR_ALERTS, date=date_str, region=self._region)
             alerts = await self._async_get_data(url)
+            return DictToObj({**self._parse_dusts(dusts), **self._parse_alerts(alerts)})
 
-            return {**self._parse_dusts(dusts), **self._parse_alerts(alerts)}
-
-        return self._parse_dusts(dusts)
+        return DictToObj(self._parse_dusts(dusts))
 
     @property
     def region_name(self) -> Optional[str]:
