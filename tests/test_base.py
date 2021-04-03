@@ -59,7 +59,8 @@ async def test_dusts_and_alerts():
     assert result.sensors.wierzba["trend"] == "bez zmian"
     assert result.sensors.wierzba["level"] == "brak"
     assert (
-        result.alerts["value"] == "Wysokie stężenie pyłku olszy, bardzo niskie leszczyny."
+        result.alerts["value"]
+        == "Wysokie stężenie pyłku olszy, bardzo niskie leszczyny."
     )
     try:
         result.sensors.unknown
