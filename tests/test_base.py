@@ -43,25 +43,28 @@ async def test_dusts_and_alerts():
 
     assert zadnegoale.region_name == "Karpaty"
     assert len(result.sensors) == 8
-    assert result.sensors.cladosporium.value == 5
-    assert result.sensors.cladosporium.trend == "bez zmian"
-    assert result.sensors.cladosporium.level == "bardzo niskie"
-    assert result.sensors.cis.value == 1
-    assert result.sensors.cis.trend == "wzrost"
-    assert result.sensors.cis.level == "brak"
-    assert result.sensors.leszczyna.value == 5
-    assert result.sensors.leszczyna.trend == "bez zmian"
-    assert result.sensors.leszczyna.level == "bardzo niskie"
-    assert result.sensors.wiąz.value == 1
-    assert result.sensors.wiąz.trend == "bez zmian"
-    assert result.sensors.wiąz.level == "brak"
-    assert result.sensors.wierzba.value == 1
-    assert result.sensors.wierzba.trend == "bez zmian"
-    assert result.sensors.wierzba.level == "brak"
-    assert result.sensors.unknown is None
+    assert result.sensors.cladosporium["value"] == 5
+    assert result.sensors.cladosporium["trend"] == "bez zmian"
+    assert result.sensors.cladosporium["level"] == "bardzo niskie"
+    assert result.sensors.cis["value"] == 1
+    assert result.sensors.cis["trend"] == "wzrost"
+    assert result.sensors.cis["level"] == "brak"
+    assert result.sensors.leszczyna["value"] == 5
+    assert result.sensors.leszczyna["trend"] == "bez zmian"
+    assert result.sensors.leszczyna["level"] == "bardzo niskie"
+    assert result.sensors.wiąz["value"] == 1
+    assert result.sensors.wiąz["trend"] == "bez zmian"
+    assert result.sensors.wiąz["level"] == "brak"
+    assert result.sensors.wierzba["value"] == 1
+    assert result.sensors.wierzba["trend"] == "bez zmian"
+    assert result.sensors.wierzba["level"] == "brak"
     assert (
-        result.alerts.value == "Wysokie stężenie pyłku olszy, bardzo niskie leszczyny."
+        result.alerts["value"] == "Wysokie stężenie pyłku olszy, bardzo niskie leszczyny."
     )
+    try:
+        result.sensors.unknown
+    except AttributeError as error:
+        assert str(error) == "No such attribute: unknown"
 
 
 @pytest.mark.asyncio
@@ -87,21 +90,21 @@ async def test_dusts():
 
     assert zadnegoale.region_name == "Karpaty"
     assert len(result.sensors) == 8
-    assert result.sensors.cladosporium.value == 5
-    assert result.sensors.cladosporium.trend == "bez zmian"
-    assert result.sensors.cladosporium.level == "bardzo niskie"
-    assert result.sensors.cis.value == 1
-    assert result.sensors.cis.trend == "wzrost"
-    assert result.sensors.cis.level == "brak"
-    assert result.sensors.leszczyna.value == 5
-    assert result.sensors.leszczyna.trend == "bez zmian"
-    assert result.sensors.leszczyna.level == "bardzo niskie"
-    assert result.sensors.wiąz.value == 1
-    assert result.sensors.wiąz.trend == "bez zmian"
-    assert result.sensors.wiąz.level == "brak"
-    assert result.sensors.wierzba.value == 1
-    assert result.sensors.wierzba.trend == "bez zmian"
-    assert result.sensors.wierzba.level == "brak"
+    assert result.sensors.cladosporium["value"] == 5
+    assert result.sensors.cladosporium["trend"] == "bez zmian"
+    assert result.sensors.cladosporium["level"] == "bardzo niskie"
+    assert result.sensors.cis["value"] == 1
+    assert result.sensors.cis["trend"] == "wzrost"
+    assert result.sensors.cis["level"] == "brak"
+    assert result.sensors.leszczyna["value"] == 5
+    assert result.sensors.leszczyna["trend"] == "bez zmian"
+    assert result.sensors.leszczyna["level"] == "bardzo niskie"
+    assert result.sensors.wiąz["value"] == 1
+    assert result.sensors.wiąz["trend"] == "bez zmian"
+    assert result.sensors.wiąz["level"] == "brak"
+    assert result.sensors.wierzba["value"] == 1
+    assert result.sensors.wierzba["trend"] == "bez zmian"
+    assert result.sensors.wierzba["level"] == "brak"
 
 
 @pytest.mark.asyncio

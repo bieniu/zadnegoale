@@ -17,10 +17,8 @@ class DictToObj(dict):
 
     def __getattr__(self, name):
         if name in self:
-            if isinstance(self[name], dict):
-                return DictToObj(self[name])
             return self[name]
-        raise AttributeError("No such attribute: %s", name)
+        raise AttributeError("No such attribute: " + name)
 
 
 class ZadnegoAle:
@@ -43,14 +41,14 @@ class ZadnegoAle:
     @staticmethod
     def _parse_dusts(data: list) -> dict:
         """Parse and clean dusts API response."""
-        parsed = {
+        parsed = DictToObj({
             item["allergen"]["name"].lower(): {
                 "value": item["value"],
                 "trend": item["trend"].lower(),
                 "level": item["level"].lower(),
             }
             for item in data
-        }
+        })
 
         return {"sensors": parsed}
 
