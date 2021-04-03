@@ -20,7 +20,7 @@ class DictToObj(dict):
             if isinstance(self[name], dict):
                 return DictToObj(self[name])
             return self[name]
-        return None
+        raise AttributeError("No such attribute: %s", name)
 
 
 class ZadnegoAle:
