@@ -86,18 +86,13 @@ class ZadnegoAle:
         if alerts:
             url = self._construct_url(ATTR_ALERTS, date=date_str, region=self._region)
             alerts = await self._async_get_data(url)
-            return DictToObj({**self._parse_dusts(dusts), **self._parse_alerts(alerts)})
 
-<<<<<<< HEAD
             if self._debug:
                 _LOGGER.debug(alerts)
 
-            return {**self._parse_dusts(dusts), **self._parse_alerts(alerts)}
+            return DictToObj({**self._parse_dusts(dusts), **self._parse_alerts(alerts)})
 
-        return self._parse_dusts(dusts)
-=======
         return DictToObj(self._parse_dusts(dusts))
->>>>>>> 1cce1de449ad1f27f9647f7af7e5f23062c342bf
 
     @property
     def region_name(self) -> Optional[str]:
