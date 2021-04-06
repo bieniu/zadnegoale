@@ -15,13 +15,14 @@ _LOGGER = logging.getLogger(__name__)
 class ZadnegoAle:
     """Main class to perform Zadnego Ale API requests"""
 
-    def __init__(self, session: ClientSession, region: Union[int] = None):
+    def __init__(self, session: ClientSession, region: Union[int] = None, debug: bool = False):
         """Initialize."""
         self._session = session
         if not isinstance(region, int) or not 0 < region < 10:
             raise InvalidRegionError("'region' should be an integer from 1 to 9")
         self._region = region
         self._region_name: Optional[str] = None
+        self._debug = debug
 
     @staticmethod
     def _construct_url(arg: str, **kwargs) -> str:
@@ -64,12 +65,18 @@ class ZadnegoAle:
         url = self._construct_url(ATTR_DUSTS, date=date_str, region=self._region)
         dusts = await self._async_get_data(url)
 
+        if self._debug:
+            _LOGGER.debug(dusts)
+
         if not self._region_name:
             self._region_name = dusts[0]["region"]["name"]
 
         if alerts:
             url = self._construct_url(ATTR_ALERTS, date=date_str, region=self._region)
             alerts = await self._async_get_data(url)
+
+            if self._debug:
+                _LOGGER.debug(alerts)
 
             return {**self._parse_dusts(dusts), **self._parse_alerts(alerts)}
 
