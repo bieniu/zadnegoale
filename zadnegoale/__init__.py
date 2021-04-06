@@ -24,7 +24,9 @@ class DictToObj(dict):
 class ZadnegoAle:
     """Main class to perform Zadnego Ale API requests"""
 
-    def __init__(self, session: ClientSession, region: Union[int] = None, debug: bool = False):
+    def __init__(
+        self, session: ClientSession, region: Union[int] = None, debug: bool = False
+    ):
         """Initialize."""
         self._session = session
         if not isinstance(region, int) or not 0 < region < 10:
