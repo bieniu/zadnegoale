@@ -42,26 +42,30 @@ async def test_dusts_and_alerts():
     await session.close()
 
     assert zadnegoale.region_name == "Karpaty"
-    assert len(result["sensors"]) == 8
-    assert result["sensors"]["cladosporium"]["value"] == 5
-    assert result["sensors"]["cladosporium"]["trend"] == "bez zmian"
-    assert result["sensors"]["cladosporium"]["level"] == "bardzo niskie"
-    assert result["sensors"]["cis"]["value"] == 1
-    assert result["sensors"]["cis"]["trend"] == "wzrost"
-    assert result["sensors"]["cis"]["level"] == "brak"
-    assert result["sensors"]["leszczyna"]["value"] == 5
-    assert result["sensors"]["leszczyna"]["trend"] == "bez zmian"
-    assert result["sensors"]["leszczyna"]["level"] == "bardzo niskie"
-    assert result["sensors"]["wiąz"]["value"] == 1
-    assert result["sensors"]["wiąz"]["trend"] == "bez zmian"
-    assert result["sensors"]["wiąz"]["level"] == "brak"
-    assert result["sensors"]["wierzba"]["value"] == 1
-    assert result["sensors"]["wierzba"]["trend"] == "bez zmian"
-    assert result["sensors"]["wierzba"]["level"] == "brak"
+    assert len(result.sensors) == 8
+    assert result.sensors.cladosporium["value"] == 5
+    assert result.sensors.cladosporium["trend"] == "bez zmian"
+    assert result.sensors.cladosporium["level"] == "bardzo niskie"
+    assert result.sensors.cis["value"] == 1
+    assert result.sensors.cis["trend"] == "wzrost"
+    assert result.sensors.cis["level"] == "brak"
+    assert result.sensors.leszczyna["value"] == 5
+    assert result.sensors.leszczyna["trend"] == "bez zmian"
+    assert result.sensors.leszczyna["level"] == "bardzo niskie"
+    assert result.sensors.wiąz["value"] == 1
+    assert result.sensors.wiąz["trend"] == "bez zmian"
+    assert result.sensors.wiąz["level"] == "brak"
+    assert result.sensors.wierzba["value"] == 1
+    assert result.sensors.wierzba["trend"] == "bez zmian"
+    assert result.sensors.wierzba["level"] == "brak"
     assert (
-        result["alerts"]["value"]
+        result.alerts["value"]
         == "Wysokie stężenie pyłku olszy, bardzo niskie leszczyny."
     )
+    try:
+        result.sensors.unknown
+    except AttributeError as error:
+        assert str(error) == "No such attribute: unknown"
 
 
 @pytest.mark.asyncio
@@ -86,22 +90,22 @@ async def test_dusts():
     await session.close()
 
     assert zadnegoale.region_name == "Karpaty"
-    assert len(result["sensors"]) == 8
-    assert result["sensors"]["cladosporium"]["value"] == 5
-    assert result["sensors"]["cladosporium"]["trend"] == "bez zmian"
-    assert result["sensors"]["cladosporium"]["level"] == "bardzo niskie"
-    assert result["sensors"]["cis"]["value"] == 1
-    assert result["sensors"]["cis"]["trend"] == "wzrost"
-    assert result["sensors"]["cis"]["level"] == "brak"
-    assert result["sensors"]["leszczyna"]["value"] == 5
-    assert result["sensors"]["leszczyna"]["trend"] == "bez zmian"
-    assert result["sensors"]["leszczyna"]["level"] == "bardzo niskie"
-    assert result["sensors"]["wiąz"]["value"] == 1
-    assert result["sensors"]["wiąz"]["trend"] == "bez zmian"
-    assert result["sensors"]["wiąz"]["level"] == "brak"
-    assert result["sensors"]["wierzba"]["value"] == 1
-    assert result["sensors"]["wierzba"]["trend"] == "bez zmian"
-    assert result["sensors"]["wierzba"]["level"] == "brak"
+    assert len(result.sensors) == 8
+    assert result.sensors.cladosporium["value"] == 5
+    assert result.sensors.cladosporium["trend"] == "bez zmian"
+    assert result.sensors.cladosporium["level"] == "bardzo niskie"
+    assert result.sensors.cis["value"] == 1
+    assert result.sensors.cis["trend"] == "wzrost"
+    assert result.sensors.cis["level"] == "brak"
+    assert result.sensors.leszczyna["value"] == 5
+    assert result.sensors.leszczyna["trend"] == "bez zmian"
+    assert result.sensors.leszczyna["level"] == "bardzo niskie"
+    assert result.sensors.wiąz["value"] == 1
+    assert result.sensors.wiąz["trend"] == "bez zmian"
+    assert result.sensors.wiąz["level"] == "brak"
+    assert result.sensors.wierzba["value"] == 1
+    assert result.sensors.wierzba["trend"] == "bez zmian"
+    assert result.sensors.wierzba["level"] == "brak"
 
 
 @pytest.mark.asyncio
@@ -122,9 +126,11 @@ async def test_api_error():
     """Test API error."""
     session = aiohttp.ClientSession()
 
-    with aioresponses() as session_mock:
+    with aioresponses() as session_mock, patch(
+        "zadnegoale.date", today=Mock(return_value=TEST_DATE)
+    ):
         session_mock.get(
-            f"http://api.zadnegoale.pl/dusts/public/date/20210324/region/{VALID_REGION}",
+            f"http://api.zadnegoale.pl/dusts/public/date/20210101/region/{VALID_REGION}",
             status=404,
         )
         zadnegoale = ZadnegoAle(session, VALID_REGION)

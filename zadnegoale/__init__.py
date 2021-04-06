@@ -12,6 +12,15 @@ from .const import ATTR_ALERTS, ATTR_DUSTS, ENDPOINT, HTTP_OK, URLS
 _LOGGER = logging.getLogger(__name__)
 
 
+class DictToObj(dict):
+    """Dictionary to object class."""
+
+    def __getattr__(self, name):
+        if name in self:
+            return self[name]
+        raise AttributeError("No such attribute: " + name)
+
+
 class ZadnegoAle:
     """Main class to perform Zadnego Ale API requests"""
 
@@ -33,14 +42,17 @@ class ZadnegoAle:
     @staticmethod
     def _parse_dusts(data: list) -> dict:
         """Parse and clean dusts API response."""
-        parsed = {
-            item["allergen"]["name"].lower(): {
-                "value": item["value"],
-                "trend": item["trend"].lower(),
-                "level": item["level"].lower(),
+        parsed = DictToObj(
+            {
+                item["allergen"]["name"].lower(): {
+                    "value": item["value"],
+                    "trend": item["trend"].lower(),
+                    "level": item["level"].lower(),
+                }
+                for item in data
             }
-            for item in data
-        }
+        )
+
         return {"sensors": parsed}
 
     @staticmethod
@@ -48,7 +60,7 @@ class ZadnegoAle:
         """Parse and clean alerts API response."""
         return {"alerts": {"value": data[0]["text"]}}
 
-    async def _async_get_data(self, url: str) -> dict:
+    async def _async_get_data(self, url: str) -> list:
         """Retreive data from Zadnego Ale API."""
         async with self._session.get(url) as resp:
             if resp.status != HTTP_OK:
@@ -59,7 +71,7 @@ class ZadnegoAle:
                 raise ApiError(f"Invalid response from Zadnego Ale API: {data}")
         return data
 
-    async def async_update(self, alerts=False):
+    async def async_update(self, alerts=False) -> DictToObj:
         """Retreive data from Zadnego Ale."""
         date_str = date.today().strftime("%Y%m%d")
         url = self._construct_url(ATTR_DUSTS, date=date_str, region=self._region)
@@ -74,13 +86,18 @@ class ZadnegoAle:
         if alerts:
             url = self._construct_url(ATTR_ALERTS, date=date_str, region=self._region)
             alerts = await self._async_get_data(url)
+            return DictToObj({**self._parse_dusts(dusts), **self._parse_alerts(alerts)})
 
+<<<<<<< HEAD
             if self._debug:
                 _LOGGER.debug(alerts)
 
             return {**self._parse_dusts(dusts), **self._parse_alerts(alerts)}
 
         return self._parse_dusts(dusts)
+=======
+        return DictToObj(self._parse_dusts(dusts))
+>>>>>>> 1cce1de449ad1f27f9647f7af7e5f23062c342bf
 
     @property
     def region_name(self) -> Optional[str]:

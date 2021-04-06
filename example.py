@@ -3,9 +3,13 @@ import logging
 
 from aiohttp import ClientError, ClientSession
 
+<<<<<<< HEAD
 from zadnegoale import ApiError, InvalidRegionError, ZadnegoAle
 
 REGION = 2
+=======
+REGION = 3
+>>>>>>> 1cce1de449ad1f27f9647f7af7e5f23062c342bf
 
 logging.basicConfig(level=logging.DEBUG)
 

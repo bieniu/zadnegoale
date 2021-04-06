@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="zadnegoale",
-    version="0.1.0",
+    version="0.2.0",
     author="Maciej Bieniek",
     author_email="maciej.bieniek@gmail.com",
     description="Python wrapper for getting allergen concentration data from Żadnego Ale servers.",
