@@ -1,12 +1,17 @@
 #!/usr/bin/env python
 from setuptools import setup
 
+
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
 setup(
     name="zadnegoale",
     version="0.2.1",
     author="Maciej Bieniek",
-    author_email="maciej.bieniek@gmail.com",
     description="Python wrapper for getting allergen concentration data from Żadnego Ale servers.",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     include_package_data=True,
     url="https://github.com/bieniu/zadnegoale",
     license="Apache-2.0 License",
