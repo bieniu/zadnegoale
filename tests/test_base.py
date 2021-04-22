@@ -36,7 +36,7 @@ async def test_dusts_and_alerts():
             payload=alerts,
         )
 
-        zadnegoale = ZadnegoAle(session, VALID_REGION)
+        zadnegoale = ZadnegoAle(session, VALID_REGION, debug=True)
         result = await zadnegoale.async_update(alerts=True)
 
     await session.close()
