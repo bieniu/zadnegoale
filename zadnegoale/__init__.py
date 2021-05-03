@@ -1,11 +1,9 @@
 """
 Python wrapper for getting allergen data from Żadnego Ale API.
 """
-from __future__ import annotations
-
 import logging
 from datetime import date
-from typing import Any
+from typing import Any, Dict, Optional
 
 from aiohttp import ClientSession
 
@@ -27,14 +25,14 @@ class ZadnegoAle:
     """Main class to perform Zadnego Ale API requests"""
 
     def __init__(
-        self, session: ClientSession, region: int | None = None, debug: bool = False
+        self, session: ClientSession, region: Optional[int] = None, debug: bool = False
     ) -> None:
         """Initialize."""
         self._session = session
         if not isinstance(region, int) or not 0 < region < 10:
             raise InvalidRegionError("'region' should be an integer from 1 to 9")
         self._region = region
-        self._region_name: str | None = None
+        self._region_name: Optional[str] = None
         self._debug = debug
 
     @staticmethod
@@ -44,7 +42,7 @@ class ZadnegoAle:
         return url
 
     @staticmethod
-    def _parse_dusts(data: list) -> dict[str, Any]:
+    def _parse_dusts(data: list) -> Dict[str, Any]:
         """Parse and clean dusts API response."""
         parsed = DictToObj(
             {
@@ -60,7 +58,7 @@ class ZadnegoAle:
         return {"sensors": parsed}
 
     @staticmethod
-    def _parse_alerts(data: Any) -> dict[str, Any]:
+    def _parse_alerts(data: Any) -> Dict[str, Any]:
         """Parse and clean alerts API response."""
         return {"alerts": {"value": data[0]["text"]}}
 
@@ -99,7 +97,7 @@ class ZadnegoAle:
         return DictToObj(self._parse_dusts(dusts))
 
     @property
-    def region_name(self) -> str | None:
+    def region_name(self) -> Optional[str]:
         """Return location name."""
         return self._region_name
 
