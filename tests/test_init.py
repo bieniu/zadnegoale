@@ -140,3 +140,24 @@ async def test_api_error():
             assert str(error.status) == "Invalid response from Zadnego Ale API: 404"
 
     await session.close()
+
+
+@pytest.mark.asyncio
+async def test_invalid_data():
+    """Test invalid data."""
+    session = aiohttp.ClientSession()
+
+    with aioresponses() as session_mock, patch(
+        "zadnegoale.date", today=Mock(return_value=TEST_DATE)
+    ):
+        session_mock.get(
+            f"http://api.zadnegoale.pl/dusts/public/date/20210101/region/{VALID_REGION}",
+            payload="null",
+        )
+        zadnegoale = ZadnegoAle(session, VALID_REGION)
+        try:
+            await zadnegoale.async_update()
+        except ApiError as error:
+            assert str(error.status) == "Invalid response from Zadnego Ale API: null"
+
+    await session.close()
