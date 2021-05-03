@@ -1,9 +1,11 @@
 """
 Python wrapper for getting allergen data from Żadnego Ale API.
 """
+from __future__ import annotations
+
 import logging
 from datetime import date
-from typing import Optional, Union
+from typing import Any
 
 from aiohttp import ClientSession
 
@@ -15,7 +17,7 @@ _LOGGER = logging.getLogger(__name__)
 class DictToObj(dict):
     """Dictionary to object class."""
 
-    def __getattr__(self, name):
+    def __getattr__(self, name: str) -> Any:
         if name in self:
             return self[name]
         raise AttributeError("No such attribute: " + name)
@@ -25,18 +27,18 @@ class ZadnegoAle:
     """Main class to perform Zadnego Ale API requests"""
 
     def __init__(
-        self, session: ClientSession, region: Union[int] = None, debug: bool = False
-    ):
+        self, session: ClientSession, region: int | None = None, debug: bool = False
+    ) -> None:
         """Initialize."""
         self._session = session
         if not isinstance(region, int) or not 0 < region < 10:
             raise InvalidRegionError("'region' should be an integer from 1 to 9")
         self._region = region
-        self._region_name: Optional[str] = None
+        self._region_name: str | None = None
         self._debug = debug
 
     @staticmethod
-    def _construct_url(arg: str, **kwargs) -> str:
+    def _construct_url(arg: str, **kwargs: Any) -> str:
         """Construct Zadnego Ale API URL."""
         url = ENDPOINT + URLS[arg].format(**kwargs)
         return url
@@ -58,11 +60,11 @@ class ZadnegoAle:
         return {"sensors": parsed}
 
     @staticmethod
-    def _parse_alerts(data: list) -> dict:
+    def _parse_alerts(data: Any) -> dict:
         """Parse and clean alerts API response."""
         return {"alerts": {"value": data[0]["text"]}}
 
-    async def _async_get_data(self, url: str) -> list:
+    async def _async_get_data(self, url: str) -> Any:
         """Retreive data from Zadnego Ale API."""
         async with self._session.get(url) as resp:
             if resp.status != HTTP_OK:
@@ -73,7 +75,7 @@ class ZadnegoAle:
                 raise ApiError(f"Invalid response from Zadnego Ale API: {data}")
         return data
 
-    async def async_update(self, alerts=False) -> DictToObj:
+    async def async_update(self, alerts: bool = False) -> DictToObj:
         """Retreive data from Zadnego Ale."""
         date_str = date.today().strftime("%Y%m%d")
         url = self._construct_url(ATTR_DUSTS, date=date_str, region=self._region)
@@ -97,7 +99,7 @@ class ZadnegoAle:
         return DictToObj(self._parse_dusts(dusts))
 
     @property
-    def region_name(self) -> Optional[str]:
+    def region_name(self) -> str | None:
         """Return location name."""
         return self._region_name
 
@@ -105,7 +107,7 @@ class ZadnegoAle:
 class ApiError(Exception):
     """Raised when Zadnego Ale API request ended in error."""
 
-    def __init__(self, status: str):
+    def __init__(self, status: str) -> None:
         """Initialize."""
         super().__init__(status)
         self.status = status
@@ -114,7 +116,7 @@ class ApiError(Exception):
 class InvalidRegionError(Exception):
     """Raised when region is invalid."""
 
-    def __init__(self, status: str):
+    def __init__(self, status: str) -> None:
         """Initialize."""
         super().__init__(status)
         self.status = status
