@@ -44,7 +44,7 @@ class ZadnegoAle:
         return url
 
     @staticmethod
-    def _parse_dusts(data: list) -> dict:
+    def _parse_dusts(data: list) -> dict[str, Any]:
         """Parse and clean dusts API response."""
         parsed = DictToObj(
             {
@@ -60,7 +60,7 @@ class ZadnegoAle:
         return {"sensors": parsed}
 
     @staticmethod
-    def _parse_alerts(data: Any) -> dict:
+    def _parse_alerts(data: Any) -> dict[str, Any]:
         """Parse and clean alerts API response."""
         return {"alerts": {"value": data[0]["text"]}}
 
