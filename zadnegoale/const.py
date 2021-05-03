@@ -1,5 +1,6 @@
 """Constants for Zadnego Ale library."""
 from typing import Dict, Final
+
 ATTR_DUSTS: Final = "dusts"
 ATTR_ALERTS: Final = "alerts"
 
