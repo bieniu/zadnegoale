@@ -1,12 +1,13 @@
 """Constants for Zadnego Ale library."""
-ATTR_DUSTS = "dusts"
-ATTR_ALERTS = "alerts"
+from typing import Dict, Final
+ATTR_DUSTS: Final = "dusts"
+ATTR_ALERTS: Final = "alerts"
 
-ENDPOINT = "http://api.zadnegoale.pl/"
+ENDPOINT: Final = "http://api.zadnegoale.pl/"
 
-HTTP_OK = 200
+HTTP_OK: Final = 200
 
-URLS = {
+URLS: Final[Dict[str, str]] = {
     ATTR_DUSTS: "dusts/public/date/{date}/region/{region}",
     ATTR_ALERTS: "alerts/public/date/{date}/region/{region}",
 }
