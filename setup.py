@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="zadnegoale",
-    version="0.3.0",
+    version="0.4.0",
     author="Maciej Bieniek",
     description="Python wrapper for getting allergen concentration data from Żadnego Ale servers.",
     long_description=long_description,
