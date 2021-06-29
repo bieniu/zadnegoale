@@ -4,10 +4,12 @@ Python wrapper for getting allergen data from Żadnego Ale API.
 import logging
 from datetime import date
 from typing import Any, Dict, Optional
+from dacite import from_dict
 
 from aiohttp import ClientSession
 
 from .const import ATTR_ALERTS, ATTR_DUSTS, ENDPOINT, HTTP_OK, URLS
+from .model import AllergenData, Allergens
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -44,7 +46,7 @@ class ZadnegoAle:
     @staticmethod
     def _parse_dusts(data: list) -> Dict[str, Any]:
         """Parse and clean dusts API response."""
-        parsed = DictToObj(
+        parsed = from_dict(data_class=Allergens, data=
             {
                 item["allergen"]["name"].lower(): {
                     "value": item["value"],
