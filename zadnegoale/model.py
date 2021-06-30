@@ -8,7 +8,7 @@ class Allergen:
     """Data class for allergen."""
 
     value: int
-    trend: str
+    trend: Optional[str]
     level: str
 
 

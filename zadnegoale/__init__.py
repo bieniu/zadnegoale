@@ -8,7 +8,7 @@ from typing import Any, List, Optional
 from aiohttp import ClientSession
 from dacite import from_dict
 
-from .const import ATTR_ALERTS, ATTR_DUSTS, ENDPOINT, HTTP_OK, URL
+from .const import ALLERGEN, ALLERGENS, ATTR_ALERTS, ATTR_DUSTS, ENDPOINT, HTTP_OK, URL, ATTR_LEVEL, ATTR_TREND, ATTR_VALUE
 from .model import Allergens
 
 _LOGGER = logging.getLogger(__name__)
@@ -38,17 +38,17 @@ class ZadnegoAle:
     @staticmethod
     def _parse_dusts(data: list) -> Allergens:
         """Parse and clean dusts API response."""
-        return from_dict(
-            data_class=Allergens,
-            data={
-                item["allergen"]["name"].lower(): {
-                    "value": item["value"],
-                    "trend": item["trend"].lower(),
-                    "level": item["level"].lower(),
-                }
-                for item in data
-            },
-        )
+        allergens = dict.fromkeys(ALLERGENS, ALLERGEN)
+        parsed = {
+            item["allergen"]["name"].lower(): {
+                ATTR_VALUE: item[ATTR_VALUE],
+                ATTR_TREND: item[ATTR_TREND].lower(),
+                ATTR_LEVEL: item[ATTR_LEVEL].lower(),
+            }
+            for item in data
+        }
+        allergens.update(parsed)
+        return from_dict(data_class=Allergens, data=allergens)
 
     @staticmethod
     def _parse_alerts(data: Any) -> List[str]:
