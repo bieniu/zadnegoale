@@ -1,5 +1,5 @@
 """Constants for Zadnego Ale library."""
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Tuple
 
 ATTR_DUSTS: str = "dusts"
 ATTR_ALERTS: str = "alerts"
@@ -40,31 +40,38 @@ ALLERGENS: List[str] = [
     "wiąz",
 ]
 
-ALLERGEN: Dict[str, Optional[Union[int, str]]] = {
-    ATTR_VALUE: 0,
-    ATTR_TREND: None,
-    ATTR_LEVEL: "brak",
+TRANSLATE_STATES_MAP: Dict[str, str] = {
+    "Bardzo niskie": "Very low",
+    "Bardzo wysokie": "Very high",
+    "Brak": "Lack",
+    "Niskie": "Low",
+    "Wysokie": "High",
+    "Średnie": "Medium",
+    "Bez zmian": "No change",
+    "Wzrost": "Increase",
+    "Spadek": "Decrease",
 }
 
-# RENAME_KEY_MAP = [
-#     ("ambrozja", "ragweed"),
-#     ("babka", "plantain"),
-#     ("brzoza", "birch"),
-#     ("buk", "beech"),
-#     ("bylica", "mugwort"),
-#     ("cis", "yew"),
-#     ("dąb", "oak"),
-#     ("", ""),
-#     ("", ""),
-#     ("", ""),
-#     ("", ""),
-#     ("", ""),
-#     ("", ""),
-#     ("", ""),
-#     ("", ""),
-#     ("", ""),
-#     ("", ""),
-#     ("", ""),
-#     ("", ""),
-
-# ]
+TRANSLATE_ALLERGENS_MAP: List[Tuple[str, str]] = [
+    ("ambrozja", "ragweed"),
+    ("babka", "plantain"),
+    ("brzoza", "birch"),
+    ("buk", "beech"),
+    ("bylica", "mugwort"),
+    ("cis", "yew"),
+    ("dąb", "oak"),
+    ("grab", "hornbeam"),
+    ("jesion", "ash"),
+    ("klon", "maple"),
+    ("komosa", "pigweed"),
+    ("leszczyna", "hazel"),
+    ("olsza", "alder"),
+    ("platan", "plane_tree"),
+    ("pokrzywa", "nettle"),
+    ("sosna", "pine"),
+    ("szczaw", "sorrel"),
+    ("topola", "poplar"),
+    ("trawy", "grass"),
+    ("wierzba", "willow"),
+    ("wiąz", "elm"),
+]

@@ -3,12 +3,24 @@ Python wrapper for getting allergen data from Żadnego Ale API.
 """
 import logging
 from datetime import date
-from typing import Any, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from aiohttp import ClientSession
 from dacite import from_dict
 
-from .const import ALLERGEN, ALLERGENS, ATTR_ALERTS, ATTR_DUSTS, ENDPOINT, HTTP_OK, URL, ATTR_LEVEL, ATTR_TREND, ATTR_VALUE
+from .const import (
+    ALLERGENS,
+    ATTR_ALERTS,
+    ATTR_DUSTS,
+    ATTR_LEVEL,
+    ATTR_TREND,
+    ATTR_VALUE,
+    ENDPOINT,
+    HTTP_OK,
+    TRANSLATE_ALLERGENS_MAP,
+    TRANSLATE_STATES_MAP,
+    URL,
+)
 from .model import Allergens
 
 _LOGGER = logging.getLogger(__name__)
@@ -38,16 +50,20 @@ class ZadnegoAle:
     @staticmethod
     def _parse_dusts(data: list) -> Allergens:
         """Parse and clean dusts API response."""
-        allergens = dict.fromkeys(ALLERGENS, ALLERGEN)
+        allergens: Dict[
+            str, Dict[Optional[str], Union[str, int, None]]
+        ] = dict.fromkeys(ALLERGENS, {})
         parsed = {
             item["allergen"]["name"].lower(): {
                 ATTR_VALUE: item[ATTR_VALUE],
-                ATTR_TREND: item[ATTR_TREND].lower(),
-                ATTR_LEVEL: item[ATTR_LEVEL].lower(),
+                ATTR_TREND: TRANSLATE_STATES_MAP[item[ATTR_TREND]],
+                ATTR_LEVEL: TRANSLATE_STATES_MAP[item[ATTR_LEVEL]],
             }
             for item in data
         }
         allergens.update(parsed)
+        for pol_name, eng_name in TRANSLATE_ALLERGENS_MAP:
+            allergens[eng_name] = allergens.pop(pol_name)
         return from_dict(data_class=Allergens, data=allergens)
 
     @staticmethod
