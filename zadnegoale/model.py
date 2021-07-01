@@ -18,9 +18,9 @@ class Allergens:  # pylint: disable=too-many-instance-attributes
 
     alder: Optional[Allergen]
     alternaria: Optional[Allergen]
-    ash: Optional[Allergen]
+    ash_tree: Optional[Allergen]
     beech: Optional[Allergen]
-    birch: Optional[Allergen]
+    birch_tree: Optional[Allergen]
     cladosporium: Optional[Allergen]
     elm: Optional[Allergen]
     grass: Optional[Allergen]
