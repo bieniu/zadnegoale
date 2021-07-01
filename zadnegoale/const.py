@@ -41,15 +41,15 @@ ALLERGENS: List[str] = [
 ]
 
 TRANSLATE_STATES_MAP: Dict[str, str] = {
-    "Bardzo niskie": "Very low",
-    "Bardzo wysokie": "Very high",
-    "Brak": "Lack",
-    "Niskie": "Low",
-    "Wysokie": "High",
-    "Średnie": "Medium",
-    "Bez zmian": "No change",
-    "Wzrost": "Increase",
-    "Spadek": "Decrease",
+    "Bardzo niskie": "very low",
+    "Bardzo wysokie": "very high",
+    "Brak": "lack",
+    "Niskie": "low",
+    "Wysokie": "high",
+    "Średnie": "medium",
+    "Bez zmian": "steady",
+    "Wzrost": "rising",
+    "Spadek": "falling",
 }
 
 TRANSLATE_ALLERGENS_MAP: List[Tuple[str, str]] = [

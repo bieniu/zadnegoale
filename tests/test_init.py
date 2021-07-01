@@ -44,19 +44,19 @@ async def test_dusts_and_alerts():
 
     assert zadnegoale.region_name == "Karpaty"
     assert result_dusts.cladosporium.value == 5
-    assert result_dusts.cladosporium.trend == "No change"
-    assert result_dusts.cladosporium.level == "Very low"
+    assert result_dusts.cladosporium.trend == "steady"
+    assert result_dusts.cladosporium.level == "very low"
     assert result_dusts.yew.value == 1
-    assert result_dusts.yew.trend == "Increase"
-    assert result_dusts.yew.level == "Lack"
+    assert result_dusts.yew.trend == "rising"
+    assert result_dusts.yew.level == "lack"
     assert result_dusts.hazel.value == 5
-    assert result_dusts.hazel.trend == "No change"
-    assert result_dusts.hazel.level == "Very low"
+    assert result_dusts.hazel.trend == "steady"
+    assert result_dusts.hazel.level == "very low"
     assert result_dusts.elm.value == 1
-    assert result_dusts.elm.trend == "No change"
-    assert result_dusts.elm.level == "Lack"
-    assert result_dusts.willow.trend == "No change"
-    assert result_dusts.willow.level == "Lack"
+    assert result_dusts.elm.trend == "steady"
+    assert result_dusts.elm.level == "lack"
+    assert result_dusts.willow.trend == "steady"
+    assert result_dusts.willow.level == "lack"
     assert result_alerts[0] == "Wysokie stężenie pyłku olszy, bardzo niskie leszczyny."
 
 
