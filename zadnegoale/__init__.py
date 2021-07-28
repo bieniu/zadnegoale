@@ -52,8 +52,12 @@ class ZadnegoAle:
         parsed = {
             item["allergen"]["name"].lower(): {
                 ATTR_VALUE: item[ATTR_VALUE],
-                ATTR_TREND: TRANSLATE_STATES_MAP[item[ATTR_TREND]],
-                ATTR_LEVEL: TRANSLATE_STATES_MAP[item[ATTR_LEVEL]],
+                ATTR_TREND: TRANSLATE_STATES_MAP.get(
+                    item[ATTR_TREND], item[ATTR_TREND]
+                ),
+                ATTR_LEVEL: TRANSLATE_STATES_MAP.get(
+                    item[ATTR_LEVEL], item[ATTR_LEVEL]
+                ),
             }
             for item in data
         }
