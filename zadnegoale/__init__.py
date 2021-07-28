@@ -3,7 +3,7 @@ Python wrapper for getting allergen data from Żadnego Ale API.
 """
 import logging
 from datetime import date
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, List, Optional
 
 from aiohttp import ClientSession
 from dacite import from_dict
@@ -49,7 +49,6 @@ class ZadnegoAle:
     @staticmethod
     def _parse_dusts(data: list) -> Allergens:
         """Parse and clean dusts API response."""
-        allergens = {}
         parsed = {
             item["allergen"]["name"].lower(): {
                 ATTR_VALUE: item[ATTR_VALUE],
@@ -58,13 +57,12 @@ class ZadnegoAle:
             }
             for item in data
         }
-        allergens.update(parsed)
         for pol_name, eng_name in TRANSLATE_ALLERGENS_MAP:
-            if pol_name in allergens:
-                allergens[eng_name] = allergens.pop(pol_name)
+            if pol_name in parsed:
+                parsed[eng_name] = parsed.pop(pol_name)
             else:
-                allergens[eng_name] = {}
-        return from_dict(data_class=Allergens, data=allergens)
+                parsed[eng_name] = {}
+        return from_dict(data_class=Allergens, data=parsed)
 
     @staticmethod
     def _parse_alerts(data: Any) -> List[str]:
