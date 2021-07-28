@@ -9,7 +9,6 @@ from aiohttp import ClientSession
 from dacite import from_dict
 
 from .const import (
-    ALLERGENS,
     ATTR_ALERTS,
     ATTR_DUSTS,
     ATTR_LEVEL,
@@ -50,9 +49,7 @@ class ZadnegoAle:
     @staticmethod
     def _parse_dusts(data: list) -> Allergens:
         """Parse and clean dusts API response."""
-        allergens: Dict[
-            str, Dict[Optional[str], Union[str, int, None]]
-        ] = dict.fromkeys(ALLERGENS, {})
+        allergens = {}
         parsed = {
             item["allergen"]["name"].lower(): {
                 ATTR_VALUE: item[ATTR_VALUE],
@@ -63,7 +60,10 @@ class ZadnegoAle:
         }
         allergens.update(parsed)
         for pol_name, eng_name in TRANSLATE_ALLERGENS_MAP:
-            allergens[eng_name] = allergens.pop(pol_name)
+            if pol_name in allergens:
+                allergens[eng_name] = allergens.pop(pol_name)
+            else:
+                allergens[eng_name] = {}
         return from_dict(data_class=Allergens, data=allergens)
 
     @staticmethod

@@ -14,32 +14,6 @@ ATTR_LEVEL: str = "level"
 ATTR_TREND: str = "trend"
 ATTR_VALUE: str = "value"
 
-ALLERGENS: List[str] = [
-    "alternaria",
-    "ambrozja",
-    "babka",
-    "brzoza",
-    "buk",
-    "bylica",
-    "cis",
-    "cladosporium",
-    "dąb",
-    "grab",
-    "jesion",
-    "klon",
-    "komosa",
-    "leszczyna",
-    "olsza",
-    "platan",
-    "pokrzywa",
-    "sosna",
-    "szczaw",
-    "topola",
-    "trawy",
-    "wierzba",
-    "wiąz",
-]
-
 TRANSLATE_STATES_MAP: Dict[str, str] = {
     "Bardzo niskie": "very low",
     "Bardzo wysokie": "very high",
