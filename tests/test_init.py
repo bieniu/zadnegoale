@@ -17,9 +17,9 @@ TEST_DATE = date(2021, 1, 1)
 @pytest.mark.asyncio
 async def test_dusts_and_alerts():
     """Test with valid dusts and alerts data."""
-    with open("tests/fixtures/dusts.json") as file:
+    with open("tests/fixtures/dusts.json", encoding="utf-8") as file:
         dusts = json.load(file)
-    with open("tests/fixtures/alerts.json") as file:
+    with open("tests/fixtures/alerts.json", encoding="utf-8") as file:
         alerts = json.load(file)
 
     session = aiohttp.ClientSession()
