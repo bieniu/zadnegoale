@@ -3,22 +3,26 @@ Python wrapper for getting allergen data from Żadnego Ale API.
 """
 import logging
 from datetime import date
-from typing import Any, Dict, Optional
+from typing import Any, List, Optional
 
 from aiohttp import ClientSession
+from dacite import from_dict
 
-from .const import ATTR_ALERTS, ATTR_DUSTS, ENDPOINT, HTTP_OK, URLS
+from .const import (
+    ATTR_ALERTS,
+    ATTR_DUSTS,
+    ATTR_LEVEL,
+    ATTR_TREND,
+    ATTR_VALUE,
+    ENDPOINT,
+    HTTP_OK,
+    TRANSLATE_ALLERGENS_MAP,
+    TRANSLATE_STATES_MAP,
+    URL,
+)
+from .model import Allergens
 
 _LOGGER = logging.getLogger(__name__)
-
-
-class DictToObj(dict):
-    """Dictionary to object class."""
-
-    def __getattr__(self, name: str) -> Any:
-        if name in self:
-            return self[name]
-        raise AttributeError("No such attribute: " + name)
 
 
 class ZadnegoAle:
@@ -36,31 +40,38 @@ class ZadnegoAle:
         self._debug = debug
 
     @staticmethod
-    def _construct_url(arg: str, **kwargs: Any) -> str:
+    def _construct_url(data_type: str, region: int) -> str:
         """Construct Zadnego Ale API URL."""
-        url = ENDPOINT + URLS[arg].format(**kwargs)
+        date_str = date.today().strftime("%Y%m%d")
+        url = ENDPOINT + URL.format(data_type, date_str, region)
         return url
 
     @staticmethod
-    def _parse_dusts(data: list) -> Dict[str, Any]:
+    def _parse_dusts(data: list) -> Allergens:
         """Parse and clean dusts API response."""
-        parsed = DictToObj(
-            {
-                item["allergen"]["name"].lower(): {
-                    "value": item["value"],
-                    "trend": item["trend"].lower(),
-                    "level": item["level"].lower(),
-                }
-                for item in data
+        parsed = {
+            item["allergen"]["name"].lower(): {
+                ATTR_VALUE: item[ATTR_VALUE],
+                ATTR_TREND: TRANSLATE_STATES_MAP.get(
+                    item[ATTR_TREND], item[ATTR_TREND]
+                ),
+                ATTR_LEVEL: TRANSLATE_STATES_MAP.get(
+                    item[ATTR_LEVEL], item[ATTR_LEVEL]
+                ),
             }
-        )
-
-        return {"sensors": parsed}
+            for item in data
+        }
+        for pol_name, eng_name in TRANSLATE_ALLERGENS_MAP:
+            if pol_name in parsed:
+                parsed[eng_name] = parsed.pop(pol_name)
+            else:
+                parsed[eng_name] = {}
+        return from_dict(data_class=Allergens, data=parsed)
 
     @staticmethod
-    def _parse_alerts(data: Any) -> Dict[str, Any]:
+    def _parse_alerts(data: Any) -> List[str]:
         """Parse and clean alerts API response."""
-        return {"alerts": {"value": data[0]["text"]}}
+        return [data[index]["text"] for index in range(len(data))]
 
     async def _async_get_data(self, url: str) -> Any:
         """Retreive data from Zadnego Ale API."""
@@ -73,10 +84,9 @@ class ZadnegoAle:
                 raise ApiError(f"Invalid response from Zadnego Ale API: {data}")
         return data
 
-    async def async_update(self, alerts: bool = False) -> DictToObj:
-        """Retreive data from Zadnego Ale."""
-        date_str = date.today().strftime("%Y%m%d")
-        url = self._construct_url(ATTR_DUSTS, date=date_str, region=self._region)
+    async def async_get_dusts(self) -> Allergens:
+        """Retreive dusts data from Zadnego Ale."""
+        url = self._construct_url(ATTR_DUSTS, self._region)
         dusts = await self._async_get_data(url)
 
         if self._debug:
@@ -85,16 +95,17 @@ class ZadnegoAle:
         if not self._region_name:
             self._region_name = dusts[0]["region"]["name"]
 
-        if alerts:
-            url = self._construct_url(ATTR_ALERTS, date=date_str, region=self._region)
-            alerts = await self._async_get_data(url)
+        return self._parse_dusts(dusts)
 
-            if self._debug:
-                _LOGGER.debug(alerts)
+    async def async_get_alerts(self) -> List[str]:
+        """Retreive dusts data from Zadnego Ale."""
+        url = self._construct_url(ATTR_ALERTS, self._region)
+        alerts = await self._async_get_data(url)
 
-            return DictToObj({**self._parse_dusts(dusts), **self._parse_alerts(alerts)})
+        if self._debug:
+            _LOGGER.debug(alerts)
 
-        return DictToObj(self._parse_dusts(dusts))
+        return self._parse_alerts(alerts)
 
     @property
     def region_name(self) -> Optional[str]:

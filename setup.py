@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="zadnegoale",
-    version="0.3.0",
+    version="0.5.0",
     author="Maciej Bieniek",
     description="Python wrapper for getting allergen concentration data from Żadnego Ale servers.",
     long_description=long_description,
@@ -16,6 +16,7 @@ setup(
     url="https://github.com/bieniu/zadnegoale",
     license="Apache-2.0 License",
     packages=["zadnegoale"],
+    package_data={"nettigo_air_monitor": ["py.typed"]},
     python_requires=">=3.6",
     install_requires=list(val.strip() for val in open("requirements.txt")),
     classifiers=[
