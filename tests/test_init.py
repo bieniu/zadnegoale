@@ -57,6 +57,8 @@ async def test_dusts_and_alerts():
     assert result_dusts.elm.level == "lack"
     assert result_dusts.willow.trend == "steady"
     assert result_dusts.willow.level == "lack"
+    assert result_dusts.goldenrod.trend == "steady"
+    assert result_dusts.goldenrod.level == "very low"
     assert result_alerts[0] == "Wysokie stężenie pyłku olszy, bardzo niskie leszczyny."
 
 

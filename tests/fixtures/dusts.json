@@ -190,5 +190,29 @@
             "id": 24,
             "name": "Wierzba"
         }
+    },
+    {
+        "id": 1921,
+        "startDate": {
+            "date": "2021-08-30 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Warsaw"
+        },
+        "endDate": {
+            "date": "2021-11-02 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe/Warsaw"
+        },
+        "trend": "Bez zmian",
+        "level": "Bardzo niskie",
+        "value": 5,
+        "region": {
+            "id": 6,
+            "name": "Mazowsze i Ziemia Łódzka"
+        },
+        "allergen": {
+            "id": 42,
+            "name": "Nawłoć"
+        }
     }
 ]

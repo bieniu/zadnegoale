@@ -23,6 +23,7 @@ class Allergens:  # pylint: disable=too-many-instance-attributes
     birch_tree: Allergen
     cladosporium: Allergen
     elm: Allergen
+    goldenrod: Allergen
     grass: Allergen
     hazel: Allergen
     hornbeam: Allergen

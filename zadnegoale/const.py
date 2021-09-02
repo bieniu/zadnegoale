@@ -41,6 +41,7 @@ TRANSLATE_ALLERGENS_MAP: List[Tuple[str, str]] = [
     ("klon", "maple"),
     ("komosa", "pigweed"),
     ("leszczyna", "hazel"),
+    ("nawłoć", "goldenrod"),
     ("olsza", "alder"),
     ("platan", "plane_tree"),
     ("pokrzywa", "nettle"),
