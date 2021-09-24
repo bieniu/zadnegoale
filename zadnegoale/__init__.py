@@ -4,6 +4,7 @@ Python wrapper for getting allergen data from Żadnego Ale API.
 import logging
 from datetime import date
 from typing import Any, List, Optional
+from http import HTTPStatus
 
 from aiohttp import ClientSession
 from dacite import from_dict
@@ -15,7 +16,6 @@ from .const import (
     ATTR_TREND,
     ATTR_VALUE,
     ENDPOINT,
-    HTTP_OK,
     TRANSLATE_ALLERGENS_MAP,
     TRANSLATE_STATES_MAP,
     URL,
@@ -76,7 +76,7 @@ class ZadnegoAle:
     async def _async_get_data(self, url: str) -> Any:
         """Retreive data from Zadnego Ale API."""
         async with self._session.get(url) as resp:
-            if resp.status != HTTP_OK:
+            if resp.status != HTTPStatus.OK.value:
                 raise ApiError(f"Invalid response from Zadnego Ale API: {resp.status}")
             _LOGGER.debug("Data retrieved from %s, status: %s", url, resp.status)
             data = await resp.json()
