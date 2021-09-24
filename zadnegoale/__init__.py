@@ -3,8 +3,8 @@ Python wrapper for getting allergen data from Żadnego Ale API.
 """
 import logging
 from datetime import date
-from typing import Any, List, Optional
 from http import HTTPStatus
+from typing import Any, List, Optional
 
 from aiohttp import ClientSession
 from dacite import from_dict
