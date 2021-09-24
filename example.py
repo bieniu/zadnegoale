@@ -5,7 +5,7 @@ from aiohttp import ClientError, ClientSession
 
 from zadnegoale import ApiError, InvalidRegionError, ZadnegoAle
 
-REGION = 2
+REGION = 8
 
 logging.basicConfig(level=logging.DEBUG)
 

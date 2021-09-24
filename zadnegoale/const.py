@@ -29,12 +29,14 @@ TRANSLATE_STATES_MAP: Dict[str, str] = {
 }
 
 TRANSLATE_ALLERGENS_MAP: List[Tuple[str, str]] = [
+    ("alternaria", "alternaria"),
     ("ambrozja", "ragweed"),
     ("babka", "plantain"),
     ("brzoza", "birch_tree"),
     ("buk", "beech"),
     ("bylica", "mugwort"),
     ("cis", "yew"),
+    ("cladosporium", "cladosporium"),
     ("dąb", "oak"),
     ("grab", "hornbeam"),
     ("jesion", "ash_tree"),
