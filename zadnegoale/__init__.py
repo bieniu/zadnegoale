@@ -6,7 +6,7 @@ from __future__ import annotations
 import logging
 from datetime import date
 from http import HTTPStatus
-from typing import Any, Optional
+from typing import Any
 
 from aiohttp import ClientSession
 from dacite import from_dict
@@ -31,14 +31,14 @@ class ZadnegoAle:
     """Main class to perform Zadnego Ale API requests"""
 
     def __init__(
-        self, session: ClientSession, region: Optional[int] = None, debug: bool = False
+        self, session: ClientSession, region: int | None = None, debug: bool = False
     ) -> None:
         """Initialize."""
         self._session = session
         if not isinstance(region, int) or not 0 < region < 10:
             raise InvalidRegionError("'region' should be an integer from 1 to 9")
         self._region = region
-        self._region_name: Optional[str] = None
+        self._region_name: str | None = None
         self._debug = debug
 
     @staticmethod
@@ -109,7 +109,7 @@ class ZadnegoAle:
         return self._parse_alerts(alerts)
 
     @property
-    def region_name(self) -> Optional[str]:
+    def region_name(self) -> str | None:
         """Return location name."""
         return self._region_name
 
