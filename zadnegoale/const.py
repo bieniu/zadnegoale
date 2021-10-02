@@ -1,5 +1,5 @@
 """Constants for Zadnego Ale library."""
-from typing import Dict, List, Tuple
+from __future__ import annotations
 
 ATTR_DUSTS: str = "dusts"
 ATTR_ALERTS: str = "alerts"
@@ -12,7 +12,7 @@ ATTR_LEVEL: str = "level"
 ATTR_TREND: str = "trend"
 ATTR_VALUE: str = "value"
 
-TRANSLATE_STATES_MAP: Dict[str, str] = {
+TRANSLATE_STATES_MAP: dict[str, str] = {
     "Bardzo niskie": "very low",
     "Bardzo wysokie": "very high",
     "Bez zmian": "steady",
@@ -26,7 +26,7 @@ TRANSLATE_STATES_MAP: Dict[str, str] = {
     "Średnie": "medium",
 }
 
-TRANSLATE_ALLERGENS_MAP: List[Tuple[str, str]] = [
+TRANSLATE_ALLERGENS_MAP: list[tuple[str, str]] = [
     ("alternaria", "alternaria"),
     ("ambrozja", "ragweed"),
     ("babka", "plantain"),
