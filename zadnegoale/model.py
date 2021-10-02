@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
@@ -9,7 +10,7 @@ class Allergen:
     """Data class for allergen."""
 
     value: int = 0
-    trend: str | None = None
+    trend: Optional[str] = None
     level: str = "lack"
 
 
