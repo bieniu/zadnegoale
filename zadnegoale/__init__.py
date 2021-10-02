@@ -1,10 +1,12 @@
 """
 Python wrapper for getting allergen data from Żadnego Ale API.
 """
+from __future__ import annotations
+
 import logging
 from datetime import date
 from http import HTTPStatus
-from typing import Any, List, Optional
+from typing import Any
 
 from aiohttp import ClientSession
 from dacite import from_dict
@@ -29,14 +31,14 @@ class ZadnegoAle:
     """Main class to perform Zadnego Ale API requests"""
 
     def __init__(
-        self, session: ClientSession, region: Optional[int] = None, debug: bool = False
+        self, session: ClientSession, region: int | None = None, debug: bool = False
     ) -> None:
         """Initialize."""
         self._session = session
         if not isinstance(region, int) or not 0 < region < 10:
             raise InvalidRegionError("'region' should be an integer from 1 to 9")
         self._region = region
-        self._region_name: Optional[str] = None
+        self._region_name: str | None = None
         self._debug = debug
 
     @staticmethod
@@ -69,7 +71,7 @@ class ZadnegoAle:
         return from_dict(data_class=Allergens, data=parsed)
 
     @staticmethod
-    def _parse_alerts(data: Any) -> List[str]:
+    def _parse_alerts(data: Any) -> list[str]:
         """Parse and clean alerts API response."""
         return [data[index]["text"] for index in range(len(data))]
 
@@ -79,8 +81,7 @@ class ZadnegoAle:
             if resp.status != HTTPStatus.OK.value:
                 raise ApiError(f"Invalid response from Zadnego Ale API: {resp.status}")
             _LOGGER.debug("Data retrieved from %s, status: %s", url, resp.status)
-            data = await resp.json()
-            if data == "null":
+            if (data := await resp.json()) == "null":
                 raise ApiError(f"Invalid response from Zadnego Ale API: {data}")
         return data
 
@@ -97,7 +98,7 @@ class ZadnegoAle:
 
         return self._parse_dusts(dusts)
 
-    async def async_get_alerts(self) -> List[str]:
+    async def async_get_alerts(self) -> list[str]:
         """Retreive dusts data from Zadnego Ale."""
         url = self._construct_url(ATTR_ALERTS, self._region)
         alerts = await self._async_get_data(url)
@@ -108,7 +109,7 @@ class ZadnegoAle:
         return self._parse_alerts(alerts)
 
     @property
-    def region_name(self) -> Optional[str]:
+    def region_name(self) -> str | None:
         """Return location name."""
         return self._region_name
 
