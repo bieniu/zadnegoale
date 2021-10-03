@@ -13,7 +13,7 @@ class Allergen:
 
 
 @dataclass
-class Allergens:  # pylint: disable=too-many-instance-attributes
+class Allergens:
     """Data class for allergens."""
 
     alder: Allergen
