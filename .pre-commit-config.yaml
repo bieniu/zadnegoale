@@ -46,3 +46,18 @@ repos:
     rev: 5.10.0
     hooks:
       - id: isort
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: no-commit-to-branch
+        args:
+          - --branch=master
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.26.3
+    hooks:
+      - id: yamllint
+  - repo: https://github.com/prettier/prettier
+    rev: 2.4.1
+    hooks:
+      - id: prettier
+        stages: [manual]
