@@ -27,7 +27,7 @@ jobs:
         pip install -r requirements.txt -r requirements-test.txt
     - name: Check with isort
       run: |
-        isort zadnegoale tests --check-only
+        pre-commit run --hook-stage manual isort --all-files --show-diff-on-failure
     - name: Check with Black Code Formatter
       run: |
         black zadnegoale tests --check
