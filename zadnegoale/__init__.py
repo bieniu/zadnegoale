@@ -1,6 +1,4 @@
-"""
-Python wrapper for getting allergen data from Żadnego Ale API.
-"""
+"""Python wrapper for getting allergen data from Żadnego Ale API."""
 from __future__ import annotations
 
 import logging
@@ -28,7 +26,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class ZadnegoAle:
-    """Main class to perform Zadnego Ale API requests"""
+    """Main class to perform Zadnego Ale API requests."""
 
     def __init__(
         self, session: ClientSession, region: int | None = None, debug: bool = False
@@ -76,7 +74,7 @@ class ZadnegoAle:
         return [data[index]["text"] for index in range(len(data))]
 
     async def _async_get_data(self, url: str) -> Any:
-        """Retreive data from Zadnego Ale API."""
+        """Retrieve data from Zadnego Ale API."""
         async with self._session.get(url) as resp:
             if resp.status != HTTPStatus.OK.value:
                 raise ApiError(f"Invalid response from Zadnego Ale API: {resp.status}")
@@ -86,7 +84,7 @@ class ZadnegoAle:
         return data
 
     async def async_get_dusts(self) -> Allergens:
-        """Retreive dusts data from Zadnego Ale."""
+        """Retrieve dusts data from Zadnego Ale."""
         url = self._construct_url(ATTR_DUSTS, self._region)
         dusts = await self._async_get_data(url)
 
@@ -99,7 +97,7 @@ class ZadnegoAle:
         return self._parse_dusts(dusts)
 
     async def async_get_alerts(self) -> list[str]:
-        """Retreive dusts data from Zadnego Ale."""
+        """Retrieve dusts data from Zadnego Ale."""
         url = self._construct_url(ATTR_ALERTS, self._region)
         alerts = await self._async_get_data(url)
 
