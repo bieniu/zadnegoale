@@ -12,7 +12,7 @@ with open("requirements-test.txt", encoding="utf-8") as file:
 
 setup(
     name="zadnegoale",
-    version="0.6.1",
+    version="0.6.2",
     author="Maciej Bieniek",
     description="Python wrapper for getting allergen concentration data from Żadnego Ale servers.",
     long_description=long_description,
