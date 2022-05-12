@@ -1,45 +1,33 @@
-name: Python package
+name: Test
 
 on:
   push:
-    branches:
-      - master
-  pull_request: ~
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 4
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
-
+        python-version:
+          - "3.9"
+          - "3.10"
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt -r requirements-test.txt
-    - name: Check with isort
-      run: |
-        pre-commit run --hook-stage manual isort --all-files --show-diff-on-failure
-    - name: Check with Black Code Formatter
-      run: |
-        black zadnegoale tests --check
-    - name: Lint with flake8
-      run: |
-        flake8 zadnegoale tests
-    - name: Lint with pylint
-      run: |
-        pylint zadnegoale tests
-    - name: Test with mypy
-      run: |
-        mypy zadnegoale
-    - name: Test with pytest
-      run: |
-        python setup.py test
+      - uses: actions/checkout@v3.0.2
+        with:
+          fetch-depth: 2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3.1.2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox tox-gh-actions
+
+      - name: Test with tox
+        run: tox
