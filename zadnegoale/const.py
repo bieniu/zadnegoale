@@ -1,4 +1,6 @@
 """Constants for Zadnego Ale library."""
+from __future__ import annotations
+
 from typing import Final
 
 ATTR_DUSTS: Final[str] = "dusts"
