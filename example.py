@@ -1,3 +1,4 @@
+"""Example of usage."""
 import asyncio
 import logging
 
@@ -11,6 +12,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 async def main():
+    """Main function."""
     async with ClientSession() as websession:
         try:
             zadnegoale = ZadnegoAle(websession, REGION, debug=False)
