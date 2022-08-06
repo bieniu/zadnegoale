@@ -23,7 +23,7 @@ repos:
         exclude_types: [csv, json]
         exclude: ^tests/fixtures/
   - repo: https://github.com/PyCQA/flake8
-    rev: 4.0.1
+    rev: 5.0.4
     hooks:
       - id: flake8
         additional_dependencies:
@@ -62,7 +62,9 @@ repos:
       - id: prettier
         stages: [manual]
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: "v0.971"
+    rev: v0.971
     hooks:
       - id: mypy
+        additional_dependencies:
+          - types-orjson
         files: ^(zadnegoale)/.+\.py$

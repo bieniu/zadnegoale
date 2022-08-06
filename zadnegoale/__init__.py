@@ -6,6 +6,7 @@ from datetime import date
 from http import HTTPStatus
 from typing import Any
 
+import orjson
 from aiohttp import ClientSession
 from dacite import from_dict
 
@@ -49,6 +50,7 @@ class ZadnegoAle:
     @staticmethod
     def _parse_dusts(data: list) -> Allergens:
         """Parse and clean dusts API response."""
+        result: Allergens
         parsed = {
             item["allergen"]["name"].lower(): {
                 ATTR_VALUE: item[ATTR_VALUE],
@@ -66,7 +68,8 @@ class ZadnegoAle:
                 parsed[eng_name] = parsed.pop(pol_name)
             else:
                 parsed[eng_name] = {}
-        return from_dict(data_class=Allergens, data=parsed)
+        result = from_dict(data_class=Allergens, data=parsed)
+        return result
 
     @staticmethod
     def _parse_alerts(data: Any) -> list[str]:
@@ -79,7 +82,7 @@ class ZadnegoAle:
             if resp.status != HTTPStatus.OK.value:
                 raise ApiError(f"Invalid response from Zadnego Ale API: {resp.status}")
             _LOGGER.debug("Data retrieved from %s, status: %s", url, resp.status)
-            if (data := await resp.json()) == "null":
+            if (data := await resp.json(loads=orjson.loads)) == "null":
                 raise ApiError(f"Invalid response from Zadnego Ale API: {data}")
         return data
 
