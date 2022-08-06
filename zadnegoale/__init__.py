@@ -83,8 +83,8 @@ class ZadnegoAle:
                 raise ApiError(f"Invalid response from Zadnego Ale API: {resp.status}")
             _LOGGER.debug("Data retrieved from %s, status: %s", url, resp.status)
             if (
-                data := await resp.json(loads=orjson.loads)
-            ) == "null":  # pylint: disable=no-member
+                data := await resp.json(loads=orjson.loads)  # pylint: disable=no-member
+            ) == "null":
                 raise ApiError(f"Invalid response from Zadnego Ale API: {data}")
         return data
 
