@@ -6,7 +6,6 @@ from datetime import date
 from http import HTTPStatus
 from typing import Any
 
-import orjson
 from aiohttp import ClientSession
 from dacite import from_dict
 
@@ -82,9 +81,7 @@ class ZadnegoAle:
             if resp.status != HTTPStatus.OK.value:
                 raise ApiError(f"Invalid response from Zadnego Ale API: {resp.status}")
             _LOGGER.debug("Data retrieved from %s, status: %s", url, resp.status)
-            if (
-                data := await resp.json(loads=orjson.loads)  # pylint: disable=no-member
-            ) == "null":
+            if (data := await resp.json()) == "null":
                 raise ApiError(f"Invalid response from Zadnego Ale API: {data}")
         return data
 
