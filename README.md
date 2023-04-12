@@ -7,6 +7,8 @@
 # zadnegoale
 Python wrapper for getting allergen concentration data from [Żadnego Ale](http://zadnegoale.pl)
 
+# Information
+The host api.zadnegoale.pl is down so the service is no longer available.
 
 ## How to use package
 
